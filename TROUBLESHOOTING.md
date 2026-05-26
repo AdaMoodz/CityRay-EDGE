@@ -1,43 +1,54 @@
 # Troubleshooting
 
-## Edge Handle Not Showing
+## Floating EDGE Not Showing
 
-Allow `Display over other apps`, then open `EDGE_PRO` and tap `EDGE`.
+- Enable `Display over other apps`.
+- Disable battery optimization for `EDGE_PRO`.
+- Open the app and tap `EDGE` again.
 
-If it disappears later, disable battery optimization for `EDGE_PRO` and keep the foreground notification enabled.
+## EDGE Disappears After Some Time
 
-## Permission Screen Still Shows An Old Name
+- Keep the foreground notification enabled.
+- Disable battery optimization for `EDGE_PRO`.
+- Enable `Show overlay on boot` in EDGE settings.
 
-Install the newest APK, reboot the head unit, and reopen `Display over other apps`. If Android cached the previous label, uninstall the old build and install `Geely_Edge_Pro.apk` fresh.
+## Shortcut Opens The Wrong App
 
-## Split Opens Full Screen
+- Long-press the shortcut.
+- Choose `Change Shortcut`.
+- Pick the correct installed app.
 
-Use `SPLIT` settings and start with `HU Top / Bottom Split`.
+## Remove A Shortcut
 
-If the bottom app replaces the top app, increase the delay, reverse the app order, or enable Accessibility Assist.
+- Long-press the shortcut.
+- Choose `Remove Shortcut`.
 
-True split mode depends on the head-unit firmware and whether both apps allow resizing. Some firmware blocks hidden split APIs.
+## Quick Swap Is Empty
 
-## Live Split Plus Buttons
+- Tap `NAV APP` or `MEDIA APP`.
+- Pick any installed app.
+- Long-press either button later to change or remove it.
 
-Use `LIVE SPLIT` on the home screen. Tap the `+` in `TOP` or `BOTTOM`, pick any installed app, and Edge Pro launches it into that slot immediately.
+## Running Apps List Is Empty
 
-## Shortcut App Not Found
+- Enable Usage Access.
+- Without Usage Access, EDGE only shows apps opened through EDGE history.
 
-Open the app picker and select the installed app manually. Edge Pro does not depend on preset apps.
+## Back / Home / Recents Do Not Work
 
-## Pinned Shortcut Not Created
-
-Some head-unit launchers block Android pinned shortcuts. Use the floating Edge dock instead.
-
-## Back, Home, Or Recents Does Not Work
-
-Enable `Accessibility Assisted Mode` for Edge Pro, then retry the control.
-
-## Close App Does Not Work
-
-Android may block closing foreground apps. Use Recents or Accessibility Assisted Mode when firmware blocks background close.
+- Enable Accessibility Assist manually.
+- EDGE only uses Accessibility for navigation helper actions.
 
 ## Widget Not Available
 
-Some Geely launchers do not support Android widgets. Use the floating Edge dock.
+Some Geely launchers may not support Android widgets. Use the floating EDGE bubble instead.
+
+## Voice Helper Does Not Speak
+
+- Check that an Android Text-To-Speech engine is installed.
+- Try another language.
+- Increase the head-unit media volume.
+
+## EDGE Overlay Not Visible Inside Android Auto
+
+Android Auto does not allow normal floating overlays inside its projected interface. Use the EDGE Auto Companion media entry where supported by Android Auto.

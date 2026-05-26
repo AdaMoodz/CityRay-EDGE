@@ -1,13 +1,14 @@
-# Install On Geely-Compatible Head Units
+# Install On Geely Head Unit
 
-1. Build or copy `Geely_Edge_Pro.apk` to a USB drive.
-2. Plug the USB drive into the head unit.
+1. Copy `CityRay_Edge_Pro.apk` to USB.
+2. Plug USB into the Geely screen.
 3. Open Cx File Explorer or the built-in file manager.
-4. Tap the APK and install it.
+4. Install the APK.
 5. Open `EDGE_PRO`.
-6. Allow `Display over other apps` for the floating edge handle.
-7. Add the apps you want in the Edge dock.
-8. Set up top/bottom split shortcuts for your preferred pairs.
-9. Disable battery optimization for `EDGE_PRO` if the overlay is stopped by firmware.
+6. Allow `Display over other apps` if you want the floating EDGE bubble.
+7. Pick your `NAV APP` and `MEDIA APP`.
+8. Add your EDGE shortcut apps.
+9. Disable battery optimization for `EDGE_PRO`.
+10. Add the widget if your Geely launcher supports Android widgets.
 
-Some Geely launchers may not support Android home screen widgets. Use the floating Edge dock instead.
+Some Geely launchers may not support Android home screen widgets. Use Floating EDGE mode instead.

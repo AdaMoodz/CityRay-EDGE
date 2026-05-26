@@ -1,25 +1,33 @@
 # Privacy And Safety
 
-Geely Edge Pro is independent software for compatible Android head units. It is not affiliated with Geely.
+Geely Edge Pro is a local helper app for compatible Android head units.
 
 ## Local Data
 
-- Dock shortcuts, split pairs, overlay position, split mode, and launch delay are stored locally.
-- Launcher-created history is stored locally to power the App Control Center.
-- No account, server, or internet connection is required.
+The app stores EDGE shortcuts, Quick Swap selections, overlay position, and simple launch history locally on the head unit.
+
+Saved Voice Helper phrases, driver nickname, optional car name, personalization settings, and the last selected Voice Helper language are also stored locally.
 
 ## Installed Apps
 
-The app reads the installed launcher app list so you can choose dock apps and split shortcuts.
+The app reads the installed launcher app list so you can choose apps for EDGE shortcuts and Quick Swap.
 
-## Optional Access
+## Usage Access
 
-Usage Access is optional and is only used to show recently used apps.
+Usage Access is optional. If enabled, it is only used to show recently used apps in the Running Apps screen.
 
-Accessibility is optional and is only used for helper actions such as Back, Home, Recents, and split-screen assist.
+## Accessibility
 
-## Safety
+Accessibility Assist is optional. It is only used for Back, Home, and Recents helper actions. EDGE does not collect typed text.
 
-Use video apps only when parked or for passenger use.
+## Android Auto
 
-Edge Pro blocks close requests for packages that look like Geely, ECARX, SystemUI, car services, camera, parking, HVAC, climate, or launcher system packages.
+EDGE Auto Companion uses Android media APIs as an experimental companion concept. Android Auto controls the displayed UI and does not allow normal floating overlays inside Android Auto.
+
+## Network
+
+No internet connection is required. EDGE does not upload personal data.
+
+## Affiliation
+
+This is not an official Geely app and does not use official Geely branding.

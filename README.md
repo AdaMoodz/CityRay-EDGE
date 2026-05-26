@@ -1,29 +1,34 @@
 # Geely Edge Pro
 
-Geely Edge Pro is a premium floating EDGE dock for Geely-compatible Android head units. It keeps a small always-available bubble on the screen and opens a clean shortcut panel for the apps you choose.
+Geely Edge Pro is a premium floating EDGE dock for Geely CityRay-compatible Android head units.
+
+EDGE focuses on fast app access, quick switching, and a clean floating dock for Geely CityRay-compatible Android head units.
 
 This project is independent software for compatible Android head units. It does not use official Geely branding, logos, or proprietary APIs.
 
 ## Highlights
 
-- Floating edge handle with a large, driver-friendly shortcut dock
+- Floating EDGE bubble overlay
+- Quick Swap mode with `NAV APP` and `MEDIA APP`
 - Add any installed app as an EDGE shortcut
 - Long-press shortcuts to change or remove them
-- One-tap return to the previous app from the floating EDGE panel
-- User-selected app slots from installed launchable apps
-- Top/bottom split-launch mode for compatible firmware
-- Home screen widget and launcher shortcut support
+- One-tap return to the previous app from the EDGE panel
 - Running/recent apps list when Usage Access is enabled
-- Optional Accessibility navigation assist for Home, Back, Recents, and split actions
-- Boot support for restoring the floating edge handle
-- Local-only preferences; no network dependency
+- EDGE Voice Helper with Android Text-To-Speech
+- EDGE Voice Identity personalization
+- Experimental EDGE Auto Companion media service for Android Auto
+- Display over other apps permission flow
+- Boot support for restoring the floating EDGE handle
+- Home screen widget and launcher shortcut support
+- Optional Accessibility navigation assist for Back, Home, and Recents
+- Local-only preferences; no internet dependency
 
 ## Target Environment
 
 - Android-based Geely-compatible head unit
 - Portrait/vertical 2K-style display
 - APK sideloading through file manager, USB, or an existing installer path
-- Display over other apps permission for the floating edge dock
+- Display over other apps permission for the floating EDGE dock
 
 ## Build
 
@@ -46,10 +51,49 @@ The release build enables R8 shrinking and obfuscation. The current project sign
 3. Open `EDGE_PRO`.
 4. Grant Display over other apps.
 5. Tap `EDGE`.
-6. Add the apps you want in the dock.
-7. Use split only for app pairs you actually use.
+6. Pick your `NAV APP` and `MEDIA APP`.
+7. Add the apps you want in the EDGE dock.
 8. Disable battery optimization for `EDGE_PRO` if the overlay is stopped by firmware.
 
+## Quick Swap
+
+Quick Swap is the stable replacement for unreliable firmware multitasking.
+
+- `NAV APP`: choose your navigation or Android Auto app.
+- `MEDIA APP`: choose your music or video app.
+- Tap either button from the main app or floating EDGE panel to open it instantly.
+- Use the previous-app icon in the EDGE panel to jump back to the last app.
+
+## EDGE Voice Helper
+
+EDGE Voice Helper lets you type text and play it aloud using Android Text-To-Speech.
+
+- Supports Arabic, English, and French.
+- Includes preset CityRay / driving phrases.
+- Keeps the screen simple: driver name, language, message box, presets, Speak, Stop, and Test Greeting.
+- Waits for the Android TTS engine before enabling Speak.
+- Shows a TTS settings shortcut if the voice engine or selected language is missing.
+- Stops speech safely when leaving the screen or closing the app.
+
+## EDGE Voice Identity
+
+EDGE Voice Identity lets you save a local driver name/nickname.
+
+- TTS can speak personalized phrases like `Welcome {name}, EDGE is ready.`
+- Arabic, English, and French preset greetings include the saved name.
+- Works offline using Android Text-To-Speech.
+- No cloud AI, account login, or microphone is used.
+
+## EDGE Auto Companion
+
+EDGE Auto Companion is an experimental Android Auto media companion concept.
+
+- It does not show floating overlays inside Android Auto.
+- Android Auto does not allow normal overlay windows inside its projected UI.
+- EDGE exposes simple media-style categories through Android media APIs.
+- Android Auto controls the UI.
+- The current categories are `EDGE Quick Help`, `CityRay Tips`, `Drive Mode`, `Maintenance Tips`, and `Morocco Road Tips`.
+- Voice Helper phrases are shared with the Auto Companion structure so they can be reused later.
 
 ## Privacy
 
@@ -59,41 +103,13 @@ No internet connection is required.
 
 ## Project Status
 
-Release target: `v1.1`
+Release target: `v1.0`
 
 Primary APK name for sideloading:
 
 ```text
 CityRay_Edge_Pro.apk
 ```
-
-🚗 EDGE Pro v1.1 — Voice Identity Release
-
-New update added:
-
-✅ Driver name / nickname
-✅ Optional car name
-✅ Arabic / English / French voice phrases
-✅ Personalized TTS voice
-✅ Test Greeting
-✅ Custom voice profile
-✅ Works locally — no internet required
-
-Example:
-🚗 EDGE Pro v1.1 — Voice Identity Release
-
-New update added:
-
-✅ Driver name / nickname
-✅ Optional car name
-✅ Arabic / English / French voice phrases
-✅ Personalized TTS voice
-✅ Test Greeting
-✅ Custom voice profile
-✅ Works locally — no internet required
-
-
-See [RELEASE_V1_1.md](RELEASE_V1_1.md) for the short English and Arabic explanation.
 
 ## License
 
