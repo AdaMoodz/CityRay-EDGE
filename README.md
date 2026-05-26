@@ -70,7 +70,7 @@ Primary APK name for sideloading:
 CityRay_Edge_Pro.apk
 ```
 
-See [RELEASE_V1_0.md](RELEASE_V1_0.md) for the short English and Egyptian Arabic explanation.
+See [RELEASE_V1_0.md](RELEASE_V1_0.md) for the short English and Arabic explanation.
 
 ## License
 
