@@ -1,0 +1,9 @@
+<resources>
+    <color name="cityray_bg">#070A0F</color>
+    <color name="cityray_panel">#151B24</color>
+    <color name="cityray_panel_2">#202A36</color>
+    <color name="cityray_accent">#2CE6D0</color>
+    <color name="cityray_accent_2">#8CB4FF</color>
+    <color name="cityray_text">#F4F8FF</color>
+    <color name="cityray_muted">#A7B0C0</color>
+</resources>

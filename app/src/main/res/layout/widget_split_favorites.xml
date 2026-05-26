@@ -1,0 +1,45 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/widget_background"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="10dp">
+
+    <Button
+        android:id="@+id/widget_button_1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:text="Shortcut 1"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/widget_button_2"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:text="Shortcut 2"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/widget_button_3"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:text="Shortcut 3"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/widget_button_4"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:text="Last Pair"
+        android:textSize="16sp" />
+</LinearLayout>

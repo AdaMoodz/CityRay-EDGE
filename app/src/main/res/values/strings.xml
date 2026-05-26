@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">👉🏽EDGE_PRO👈🏽</string>
+    <string name="app_short_name">EDGE_PRO</string>
+    <string name="subtitle">Premium edge dock and split launcher</string>
+    <string name="overlay_service_label">👉🏽EDGE_PRO👈🏽</string>
+    <string name="widget_name">Edge Pro Favorites Widget</string>
+    <string name="accessibility_service_label">Edge Pro Navigation Assist</string>
+    <string name="accessibility_service_description">Optional navigation assist for Back, Home, Recents, and split-screen actions. No typed text is collected or uploaded.</string>
+</resources>
