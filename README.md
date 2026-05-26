@@ -50,9 +50,6 @@ The release build enables R8 shrinking and obfuscation. The current project sign
 7. Use split only for app pairs you actually use.
 8. Disable battery optimization for `EDGE_PRO` if the overlay is stopped by firmware.
 
-## Split Launching
-
-True split behavior depends on the head-unit firmware and on whether the target apps allow resizing. Top/bottom split is included as a beta feature because some Geely firmware builds block normal Android split-window requests.
 
 ## Privacy
 
@@ -62,7 +59,7 @@ No internet connection is required.
 
 ## Project Status
 
-Release target: `v1.0`
+Release target: `v1.1`
 
 Primary APK name for sideloading:
 
@@ -70,7 +67,33 @@ Primary APK name for sideloading:
 CityRay_Edge_Pro.apk
 ```
 
-See [RELEASE_V1_0.md](RELEASE_V1_0.md) for the short English and Arabic explanation.
+🚗 EDGE Pro v1.1 — Voice Identity Release
+
+New update added:
+
+✅ Driver name / nickname
+✅ Optional car name
+✅ Arabic / English / French voice phrases
+✅ Personalized TTS voice
+✅ Test Greeting
+✅ Custom voice profile
+✅ Works locally — no internet required
+
+Example:
+🚗 EDGE Pro v1.1 — Voice Identity Release
+
+New update added:
+
+✅ Driver name / nickname
+✅ Optional car name
+✅ Arabic / English / French voice phrases
+✅ Personalized TTS voice
+✅ Test Greeting
+✅ Custom voice profile
+✅ Works locally — no internet required
+
+
+See [RELEASE_V1_1.md](RELEASE_V1_1.md) for the short English and Arabic explanation.
 
 ## License
 
