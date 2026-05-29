@@ -10,20 +10,6 @@ import android.os.Build
 import android.widget.Toast
 
 object ShortcutHelper {
-    fun pinPairShortcut(context: Context, index: Int) {
-        val pair = PairRepository(context).favorites().getOrNull(index)
-        if (pair == null || pair.leftPackage.isBlank() || pair.rightPackage.isBlank()) {
-            Toast.makeText(context, "Pick top and bottom apps before creating shortcut.", Toast.LENGTH_LONG).show()
-            return
-        }
-        val launchIntent = Intent(context, MainActivity::class.java).apply {
-            action = CityRayActions.ACTION_LAUNCH_PAIR
-            putExtra(CityRayActions.EXTRA_PAIR_INDEX, index)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        }
-        pinShortcut(context, "cityray_pair_$index", pair.name, launchIntent)
-    }
-
     fun pinAppShortcut(context: Context, app: AppEntry) {
         if (app.packageName.isBlank() || !app.installed) {
             Toast.makeText(context, "App is not installed.", Toast.LENGTH_LONG).show()

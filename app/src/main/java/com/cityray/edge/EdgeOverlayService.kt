@@ -20,7 +20,6 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -34,7 +33,7 @@ class EdgeOverlayService : Service() {
     private var menu: View? = null
     private var headlightAnimator: ObjectAnimator? = null
     private var wakeLock: PowerManager.WakeLock? = null
-    private val repo by lazy { PairRepository(this) }
+    private val repo by lazy { EdgeRepository(this) }
 
     override fun onCreate() {
         super.onCreate()
@@ -46,8 +45,8 @@ class EdgeOverlayService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         when (intent?.action) {
-            CityRayActions.ACTION_LAUNCH_LAST -> SplitLauncher.launchPair(this, repo.lastPairIndex())
-            CityRayActions.ACTION_LAUNCH_DOCK -> SplitLauncher.launchDockShortcut(this, intent.getIntExtra(CityRayActions.EXTRA_DOCK_INDEX, 0))
+            CityRayActions.ACTION_LAUNCH_DOCK -> EdgeLauncher.launchDockShortcut(this, intent.getIntExtra(CityRayActions.EXTRA_DOCK_INDEX, 0))
+            CityRayActions.ACTION_LAUNCH_QUICK -> EdgeLauncher.launchQuickSwap(this, intent.getStringExtra(CityRayActions.EXTRA_QUICK_KEY).orEmpty())
             CityRayActions.ACTION_OPEN_CONTROL -> openControlCenter()
             CityRayActions.ACTION_START_OVERLAY -> showBubble()
             CityRayActions.ACTION_TOGGLE_OVERLAY -> {
@@ -164,23 +163,28 @@ class EdgeOverlayService : Service() {
         }
         val layout = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
-            setPadding(dp(14), dp(18), dp(14), dp(14))
+            setPadding(dp(10), dp(12), dp(10), dp(10))
             background = getDrawable(R.drawable.widget_background)
         }
         layout.addView(TextView(this).apply {
             text = "EDGE"
-            textSize = 26f
+            textSize = 22f
             typeface = android.graphics.Typeface.DEFAULT_BOLD
             setTextColor(android.graphics.Color.WHITE)
             gravity = Gravity.CENTER
             setShadowLayer(6f, 0f, 2f, android.graphics.Color.BLACK)
-            setPadding(0, 0, 0, dp(14))
+            setPadding(0, 0, 0, dp(8))
         })
         val grid = android.widget.GridLayout(this).apply {
             columnCount = 2
-            useDefaultMargins = true
+            useDefaultMargins = false
+            layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+                gravity = Gravity.CENTER_HORIZONTAL
+            }
         }
-        val shortcuts = repo.dockShortcuts().take(10)
+        grid.addView(quickSwapButton(EdgeRepository.QUICK_NAV, R.drawable.tile_maps))
+        grid.addView(quickSwapButton(EdgeRepository.QUICK_MEDIA, R.drawable.tile_spotify))
+        val shortcuts = repo.dockShortcuts()
         shortcuts.forEachIndexed { index, shortcut ->
             if (shortcut.packageName.isNotBlank()) {
                 grid.addView(dockButton(index, shortcut))
@@ -190,10 +194,13 @@ class EdgeOverlayService : Service() {
             openDockEditor(firstEmptyDockIndex())
             closeMenuOnly()
         })
+        while (grid.childCount < 6) {
+            grid.addView(emptySlot())
+        }
         layout.addView(grid)
-        layout.addView(quickControls())
+        layout.addView(edgeControls())
         layout.addView(backIconButton {
-            SplitLauncher.performNavigation(this@EdgeOverlayService, "back")
+            EdgeLauncher.smartBack(this@EdgeOverlayService)
             closeMenuOnly()
         })
 
@@ -222,7 +229,7 @@ class EdgeOverlayService : Service() {
                 }
             }
         }
-        val menuWidth = dp(292)
+        val menuWidth = dp(188)
         val anchor = bubbleParams
         val params = overlayParams(menuWidth, WindowManager.LayoutParams.WRAP_CONTENT).apply {
             gravity = Gravity.TOP or Gravity.START
@@ -241,40 +248,41 @@ class EdgeOverlayService : Service() {
         }
         menu = scroll
         windowManager.addView(scroll, params)
+        scroll.alpha = 0f
+        scroll.scaleX = 0.94f
+        scroll.scaleY = 0.94f
+        scroll.animate().alpha(1f).scaleX(1f).scaleY(1f).setDuration(180L).start()
     }
 
-    private fun quickControls() = LinearLayout(this).apply {
-        orientation = LinearLayout.HORIZONTAL
-        gravity = Gravity.CENTER
-        setPadding(0, dp(8), 0, dp(2))
-        addView(iconControl(R.drawable.tile_apps) {
-            SplitLauncher.openPreviousApp(this@EdgeOverlayService)
-            closeMenuOnly()
-        }, LinearLayout.LayoutParams(0, dp(62), 1f).apply { setMargins(dp(2), 0, dp(2), 0) })
-        addView(iconControl(R.drawable.tile_settings) {
-            openControlCenter()
-            closeMenuOnly()
-        }, LinearLayout.LayoutParams(0, dp(62), 1f).apply { setMargins(dp(2), 0, dp(2), 0) })
-        addView(iconControl(R.drawable.tile_power) {
-            closeMenuOnly()
-        }, LinearLayout.LayoutParams(0, dp(62), 1f).apply { setMargins(dp(2), 0, dp(2), 0) })
-    }
-
-    private fun iconControl(iconRes: Int, click: () -> Unit) = FrameLayout(this).apply {
+    private fun quickSwapButton(key: String, fallbackIcon: Int) = FrameLayout(this).apply {
+        val slot = repo.quickSlot(key)
         setBackgroundColor(Color.TRANSPARENT)
         isClickable = true
         isFocusable = true
         addView(ImageView(this@EdgeOverlayService).apply {
-            setImageResource(iconRes)
+            if (slot.packageName.isBlank()) setImageResource(fallbackIcon) else setImageDrawable(appIcon(slot.packageName))
             scaleType = ImageView.ScaleType.FIT_CENTER
-            setPadding(dp(10), dp(10), dp(10), dp(10))
+            setPadding(dp(10), dp(8), dp(10), dp(8))
         }, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER))
-        setOnClickListener { click() }
+        setOnClickListener {
+            if (slot.packageName.isBlank()) openQuickEditor(key) else EdgeLauncher.launchQuickSwap(this@EdgeOverlayService, key)
+            closeMenuOnly()
+        }
+        setOnLongClickListener {
+            openQuickEditor(key)
+            closeMenuOnly()
+            true
+        }
+        layoutParams = android.widget.GridLayout.LayoutParams().apply {
+            width = dp(64)
+            height = dp(58)
+            setMargins(dp(4), dp(3), dp(4), dp(3))
+        }
     }
 
     private fun dockButton(index: Int, shortcut: DockShortcut) = FrameLayout(this).apply {
-        setPadding(dp(12), dp(10), dp(12), dp(10))
-        background = getDrawable(R.drawable.tile_button_background)
+        setPadding(0, 0, 0, 0)
+        setBackgroundColor(Color.TRANSPARENT)
         isClickable = true
         isFocusable = true
         addView(ImageView(this@EdgeOverlayService).apply {
@@ -285,9 +293,9 @@ class EdgeOverlayService : Service() {
                 alpha = 0.72f
             }
             scaleType = ImageView.ScaleType.FIT_CENTER
-        }, FrameLayout.LayoutParams(dp(68), dp(68), Gravity.CENTER))
+        }, FrameLayout.LayoutParams(dp(46), dp(46), Gravity.CENTER))
         setOnClickListener {
-            SplitLauncher.launchDockShortcut(this@EdgeOverlayService, index)
+            EdgeLauncher.launchDockShortcut(this@EdgeOverlayService, index)
             toggleMenu()
         }
         setOnLongClickListener {
@@ -296,37 +304,71 @@ class EdgeOverlayService : Service() {
             true
         }
         layoutParams = android.widget.GridLayout.LayoutParams().apply {
-            width = dp(118)
-            height = dp(96)
-            setMargins(dp(5), dp(5), dp(5), dp(5))
+            width = dp(64)
+            height = dp(58)
+            setMargins(dp(4), dp(3), dp(4), dp(3))
         }
     }
 
     private fun addButton(click: () -> Unit) = FrameLayout(this).apply {
-        background = getDrawable(R.drawable.tile_button_background)
+        setBackgroundColor(Color.TRANSPARENT)
+        isClickable = true
+        isFocusable = true
         addView(ImageView(this@EdgeOverlayService).apply {
             setImageResource(R.drawable.ic_edge_add)
             scaleType = ImageView.ScaleType.FIT_CENTER
-        }, FrameLayout.LayoutParams(dp(68), dp(68), Gravity.CENTER))
+            setPadding(dp(10), dp(8), dp(10), dp(8))
+        }, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER))
         setOnClickListener { click() }
         layoutParams = android.widget.GridLayout.LayoutParams().apply {
-            width = dp(118)
-            height = dp(96)
-            setMargins(dp(5), dp(5), dp(5), dp(5))
+            width = dp(64)
+            height = dp(58)
+            setMargins(dp(4), dp(3), dp(4), dp(3))
         }
     }
 
-    private fun menuButton(label: String, click: () -> Unit) = Button(this).apply {
-        text = label
-        isAllCaps = false
-        textSize = 21f
-        typeface = android.graphics.Typeface.DEFAULT_BOLD
-        setTextColor(android.graphics.Color.WHITE)
-        setShadowLayer(5f, 0f, 2f, android.graphics.Color.BLACK)
-        background = getDrawable(R.drawable.tile_button_background)
-        minHeight = dp(74)
-        setPadding(dp(10), dp(8), dp(10), dp(8))
+    private fun emptySlot() = FrameLayout(this).apply {
+        setBackgroundColor(Color.TRANSPARENT)
+        layoutParams = android.widget.GridLayout.LayoutParams().apply {
+            width = dp(64)
+            height = dp(58)
+            setMargins(dp(4), dp(3), dp(4), dp(3))
+        }
+    }
+
+    private fun edgeControls() = LinearLayout(this).apply {
+        orientation = LinearLayout.HORIZONTAL
+        gravity = Gravity.CENTER
+        setPadding(0, dp(3), 0, 0)
+        layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT).apply {
+            gravity = Gravity.CENTER_HORIZONTAL
+        }
+        addView(controlIcon(R.drawable.tile_apps) {
+            openMainApp()
+            closeMenuOnly()
+        })
+        addView(controlIcon(R.drawable.tile_settings) {
+            openControlCenter()
+            closeMenuOnly()
+        })
+        addView(controlIcon(R.drawable.tile_power) {
+            closeMenuOnly()
+        })
+    }
+
+    private fun controlIcon(iconRes: Int, click: () -> Unit) = FrameLayout(this).apply {
+        setBackgroundColor(Color.TRANSPARENT)
+        isClickable = true
+        isFocusable = true
+        addView(ImageView(this@EdgeOverlayService).apply {
+            setImageResource(iconRes)
+            scaleType = ImageView.ScaleType.FIT_CENTER
+            setPadding(dp(7), dp(7), dp(7), dp(7))
+        }, FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT, Gravity.CENTER))
         setOnClickListener { click() }
+        layoutParams = LinearLayout.LayoutParams(dp(40), dp(42)).apply {
+            setMargins(dp(4), 0, dp(4), 0)
+        }
     }
 
     private fun backIconButton(click: () -> Unit) = TextView(this).apply {
@@ -337,6 +379,7 @@ class EdgeOverlayService : Service() {
         setTextColor(android.graphics.Color.WHITE)
         setShadowLayer(6f, 0f, 2f, android.graphics.Color.BLACK)
         setPadding(0, 0, 0, dp(4))
+        layoutParams = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, dp(44))
         setOnClickListener { click() }
     }
 
@@ -392,6 +435,15 @@ class EdgeOverlayService : Service() {
         startActivity(intent)
     }
 
+    private fun openQuickEditor(key: String) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            action = CityRayActions.ACTION_EDIT_QUICK
+            putExtra(CityRayActions.EXTRA_QUICK_KEY, key)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        }
+        startActivity(intent)
+    }
+
     private fun appIcon(packageName: String) = runCatching {
         packageManager.getApplicationIcon(packageName)
     }.getOrElse {
@@ -416,7 +468,7 @@ class EdgeOverlayService : Service() {
             getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
         }
         val openApp = pendingActivity(Intent(this, MainActivity::class.java))
-        val lastPair = pendingService(Intent(this, EdgeOverlayService::class.java).setAction(CityRayActions.ACTION_LAUNCH_LAST), 101)
+        val nav = pendingService(Intent(this, EdgeOverlayService::class.java).setAction(CityRayActions.ACTION_LAUNCH_QUICK).putExtra(CityRayActions.EXTRA_QUICK_KEY, EdgeRepository.QUICK_NAV), 101)
         val control = pendingService(Intent(this, EdgeOverlayService::class.java).setAction(CityRayActions.ACTION_OPEN_CONTROL), 102)
         val hide = pendingService(Intent(this, EdgeOverlayService::class.java).setAction(CityRayActions.ACTION_HIDE_OVERLAY), 103)
         val stop = pendingService(Intent(this, EdgeOverlayService::class.java).setAction(CityRayActions.ACTION_STOP_OVERLAY), 104)
@@ -425,7 +477,7 @@ class EdgeOverlayService : Service() {
             .setContentTitle("Geely Edge Pro")
             .setContentText("Edge dock is active.")
             .setContentIntent(openApp)
-            .addAction(R.drawable.ic_cityray_edge, "Open Last Pair", lastPair)
+            .addAction(R.drawable.ic_cityray_edge, "NAV APP", nav)
             .addAction(R.drawable.ic_cityray_edge, "App Control", control)
             .addAction(R.drawable.ic_cityray_edge, "Hide Overlay", hide)
             .addAction(R.drawable.ic_cityray_edge, "Stop Service", stop)
@@ -451,7 +503,7 @@ class EdgeOverlayService : Service() {
 
     private fun clampMenuX(value: Int, width: Int): Int = value.coerceIn(dp(8), (displayWidth() - width - dp(8)).coerceAtLeast(dp(8)))
 
-    private fun clampMenuY(value: Int): Int = value.coerceIn(dp(28), (displayHeight() - dp(560)).coerceAtLeast(dp(28)))
+    private fun clampMenuY(value: Int): Int = value.coerceIn(dp(28), (displayHeight() - dp(430)).coerceAtLeast(dp(28)))
 
     private fun acquireServiceWakeLock() {
         runCatching {

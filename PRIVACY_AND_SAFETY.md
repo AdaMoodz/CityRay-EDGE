@@ -1,28 +1,22 @@
 # Privacy And Safety
 
-Geely Edge Pro is a local helper app for compatible Android head units.
+Geely Edge Pro is a local floating dock helper for compatible Android head units.
 
 ## Local Data
 
-The app stores EDGE shortcuts, Quick Swap selections, overlay position, and simple launch history locally on the head unit.
-
-Saved Voice Helper phrases, driver nickname, optional car name, personalization settings, and the last selected Voice Helper language are also stored locally.
+The app stores EDGE shortcuts, NAV APP / MEDIA APP selections, overlay position, and simple launch history locally on the head unit.
 
 ## Installed Apps
 
-The app reads the installed launcher app list so you can choose apps for EDGE shortcuts and Quick Swap.
+The app reads the installed launcher app list so you can choose apps for EDGE shortcuts.
 
 ## Usage Access
 
-Usage Access is optional. If enabled, it is only used to show recently used apps in the Running Apps screen.
+Usage Access is optional. If enabled, it is only used to show recently used apps and improve the previous-app return action.
 
 ## Accessibility
 
-Accessibility Assist is optional. It is only used for Back, Home, and Recents helper actions. EDGE does not collect typed text.
-
-## Android Auto
-
-EDGE Auto Companion uses Android media APIs as an experimental companion concept. Android Auto controls the displayed UI and does not allow normal floating overlays inside Android Auto.
+Accessibility Assist is optional. It is only used for system navigation helper actions if you enable it manually.
 
 ## Network
 

@@ -13,27 +13,25 @@ class MacroDroidReceiver : BroadcastReceiver() {
             CityRayActions.MACRODROID_START_EDGE -> startOverlay(context, toggle = false)
             CityRayActions.MACRODROID_TOGGLE_EDGE -> startOverlay(context, toggle = true)
             CityRayActions.MACRODROID_HIDE_EDGE -> context.stopService(Intent(context, EdgeOverlayService::class.java))
-            CityRayActions.MACRODROID_OPEN_LAST_PAIR -> SplitLauncher.launchPair(context, PairRepository(context).lastPairIndex())
             CityRayActions.MACRODROID_OPEN_CONTROL -> openControlCenter(context)
-            CityRayActions.MACRODROID_LAUNCH_PAIR -> {
-                val index = intent.getIntExtra(CityRayActions.EXTRA_PAIR_INDEX, 0).coerceIn(0, 6)
-                SplitLauncher.launchPair(context, index)
-            }
             CityRayActions.MACRODROID_LAUNCH_DOCK -> {
                 val index = intent.getIntExtra(CityRayActions.EXTRA_DOCK_INDEX, 0).coerceIn(0, 9)
-                SplitLauncher.launchDockShortcut(context, index)
+                EdgeLauncher.launchDockShortcut(context, index)
             }
-            CityRayActions.MACRODROID_OVERLAY_PERMISSION -> SplitLauncher.openOverlaySettings(context)
+            CityRayActions.MACRODROID_LAUNCH_QUICK -> {
+                EdgeLauncher.launchQuickSwap(context, intent.getStringExtra(CityRayActions.EXTRA_QUICK_KEY).orEmpty())
+            }
+            CityRayActions.MACRODROID_OVERLAY_PERMISSION -> EdgeLauncher.openOverlaySettings(context)
         }
     }
 
     private fun startOverlay(context: Context, toggle: Boolean) {
         if (!Settings.canDrawOverlays(context)) {
             Toast.makeText(context, "Allow Display over other apps for Geely Edge Pro.", Toast.LENGTH_LONG).show()
-            SplitLauncher.openOverlaySettings(context)
+            EdgeLauncher.openOverlaySettings(context)
             return
         }
-        PairRepository(context).settings().edit().putBoolean("overlay_enabled", true).apply()
+        EdgeRepository(context).settings().edit().putBoolean("overlay_enabled", true).apply()
         val service = Intent(context, EdgeOverlayService::class.java).apply {
             if (toggle) action = CityRayActions.ACTION_TOGGLE_OVERLAY else action = CityRayActions.ACTION_START_OVERLAY
         }

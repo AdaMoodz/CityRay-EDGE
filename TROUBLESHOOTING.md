@@ -23,32 +23,23 @@
 - Long-press the shortcut.
 - Choose `Remove Shortcut`.
 
-## Quick Swap Is Empty
+## NAV APP / MEDIA APP Is Empty
 
-- Tap `NAV APP` or `MEDIA APP`.
+- Open the main app.
+- Select the NAV APP or MEDIA APP slot.
 - Pick any installed app.
-- Long-press either button later to change or remove it.
+
+## Previous App Does Not Open
+
+- Open at least one app from EDGE first.
+- Enable Usage Access for better recent-app detection.
+- Some head-unit firmware may block returning to protected system apps.
 
 ## Running Apps List Is Empty
 
 - Enable Usage Access.
 - Without Usage Access, EDGE only shows apps opened through EDGE history.
 
-## Back / Home / Recents Do Not Work
-
-- Enable Accessibility Assist manually.
-- EDGE only uses Accessibility for navigation helper actions.
-
 ## Widget Not Available
 
 Some Geely launchers may not support Android widgets. Use the floating EDGE bubble instead.
-
-## Voice Helper Does Not Speak
-
-- Check that an Android Text-To-Speech engine is installed.
-- Try another language.
-- Increase the head-unit media volume.
-
-## EDGE Overlay Not Visible Inside Android Auto
-
-Android Auto does not allow normal floating overlays inside its projected interface. Use the EDGE Auto Companion media entry where supported by Android Auto.

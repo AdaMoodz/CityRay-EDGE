@@ -13,7 +13,7 @@ import android.provider.Settings
 class BootReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (intent.action != Intent.ACTION_BOOT_COMPLETED) return
-        val prefs = PairRepository(context).settings()
+        val prefs = EdgeRepository(context).settings()
         if (prefs.getBoolean("overlay_boot", true) && Settings.canDrawOverlays(context)) {
             val service = Intent(context, EdgeOverlayService::class.java)
             if (Build.VERSION.SDK_INT >= 26) context.startForegroundService(service) else context.startService(service)

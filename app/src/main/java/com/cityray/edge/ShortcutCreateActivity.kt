@@ -12,11 +12,11 @@ import android.widget.ScrollView
 import android.widget.TextView
 
 class ShortcutCreateActivity : Activity() {
-    private lateinit var repo: PairRepository
+    private lateinit var repo: EdgeRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        repo = PairRepository(this)
+        repo = EdgeRepository(this)
         if (intent?.action != Intent.ACTION_CREATE_SHORTCUT) {
             finish()
             return
@@ -44,16 +44,10 @@ class ShortcutCreateActivity : Activity() {
         }
 
         root.addView(shortcutButton("Start EDGE Handle") {
-            finishWithShortcut(
-                "Start EDGE",
-                Intent(this, MainActivity::class.java).setAction(CityRayActions.ACTION_START_OVERLAY)
-            )
+            finishWithShortcut("Start EDGE", Intent(this, MainActivity::class.java).setAction(CityRayActions.ACTION_START_OVERLAY))
         })
         root.addView(shortcutButton("Open App Control Center") {
-            finishWithShortcut(
-                "EDGE Control",
-                Intent(this, MainActivity::class.java).setAction(CityRayActions.ACTION_OPEN_CONTROL)
-            )
+            finishWithShortcut("EDGE Control", Intent(this, MainActivity::class.java).setAction(CityRayActions.ACTION_OPEN_CONTROL))
         })
         root.addView(shortcutButton("Open Edge Pro") {
             finishWithShortcut("Geely Edge Pro", Intent(this, MainActivity::class.java))
@@ -67,20 +61,6 @@ class ShortcutCreateActivity : Activity() {
                         Intent(this, MainActivity::class.java).apply {
                             action = CityRayActions.ACTION_LAUNCH_DOCK
                             putExtra(CityRayActions.EXTRA_DOCK_INDEX, index)
-                        }
-                    )
-                })
-            }
-        }
-
-        repo.favorites().forEachIndexed { index, pair ->
-            if (pair.leftPackage.isNotBlank() && pair.rightPackage.isNotBlank()) {
-                root.addView(shortcutButton("Split: ${pair.name}") {
-                    finishWithShortcut(
-                        pair.name,
-                        Intent(this, MainActivity::class.java).apply {
-                            action = CityRayActions.ACTION_LAUNCH_PAIR
-                            putExtra(CityRayActions.EXTRA_PAIR_INDEX, index)
                         }
                     )
                 })

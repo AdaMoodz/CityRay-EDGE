@@ -1,69 +1,72 @@
 # MacroDroid Setup
 
-Edge Pro includes a broadcast receiver for MacroDroid `Send Intent` actions.
+EDGE can be controlled from MacroDroid using broadcast intents.
 
-The public app name is `EDGE_PRO`. The internal Android package remains `com.cityray.edge` so existing macros and upgrades keep working.
+## Start EDGE
 
-## Send Intent Target
-
-- Target: `Broadcast`
-- Package: `com.cityray.edge`
-- Class: `com.cityray.edge.MacroDroidReceiver`
-
-## Actions
-
-Start Edge:
+Action:
 
 ```text
 com.cityray.edge.macrodroid.START_EDGE
 ```
 
-Toggle Edge:
+## Toggle EDGE Panel
+
+Action:
 
 ```text
 com.cityray.edge.macrodroid.TOGGLE_EDGE
 ```
 
-Hide Edge:
+## Hide EDGE
+
+Action:
 
 ```text
 com.cityray.edge.macrodroid.HIDE_EDGE
 ```
 
-Open last split:
+## Open Running Apps
 
-```text
-com.cityray.edge.macrodroid.OPEN_LAST_PAIR
-```
-
-Open App Control:
+Action:
 
 ```text
 com.cityray.edge.macrodroid.OPEN_CONTROL
 ```
 
-Open overlay permission:
+## Launch EDGE Shortcut
 
-```text
-com.cityray.edge.macrodroid.OVERLAY_PERMISSION
-```
-
-Launch split slot:
-
-```text
-com.cityray.edge.macrodroid.LAUNCH_PAIR
-```
-
-Extra: `pair_index`
-
-Values: `0` through `5` for split slots, `6` for last split.
-
-Launch dock app:
+Action:
 
 ```text
 com.cityray.edge.macrodroid.LAUNCH_DOCK
 ```
 
-Extra: `dock_index`
+Extra:
 
-Values: `0` through `9` for Edge dock slots.
+```text
+dock_index
+```
+
+Values: `0` through `9`.
+
+## Launch Quick Swap
+
+Action:
+
+```text
+com.cityray.edge.macrodroid.LAUNCH_QUICK
+```
+
+Extra:
+
+```text
+quick_key
+```
+
+Values:
+
+```text
+quick_nav
+quick_media
+```
