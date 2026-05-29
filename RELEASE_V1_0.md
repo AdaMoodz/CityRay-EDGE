@@ -14,7 +14,7 @@ It lets you:
 - View recently used/running apps when Usage Access is enabled.
 - Keep the overlay available after startup when Display over other apps is allowed.
 
-## عربي مصري
+## عربي 
 
 **EDGE** هو دك ذكي عائم لشاشات جيلي أندرويد المتوافقة. بيظهر كبابل صغيرة دايما على الشاشة، ولما تضغط عليها يفتحلك بانل أيقونات نضيف للتطبيقات اللي انت مختارها.
 
